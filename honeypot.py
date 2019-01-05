@@ -3,6 +3,8 @@ import time
 import os
 import sys
 
+
+
 banner = r'''
 Coded by sc1341
  /$$   /$$                                                        /$$                        
@@ -18,6 +20,17 @@ Coded by sc1341
                                      \______/|__/                         |__/      \______/ 
 '''
 
+class colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 class Honeypot:
 	s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
@@ -30,7 +43,7 @@ class Honeypot:
 		and logs it in the "honeypotlog.txt file'''
 		while True:
 			conn, addr = self.s.accept()
-			print("Connection from {}".format(addr))
+			print(colors.OKGREEN + "Connection from " + str(addr) + colors.ENDC)
 			localtime = time.asctime(time.localtime(time.time()))
 			data = conn.recv(1024)
 			if not data:
@@ -63,7 +76,7 @@ class Honeypot:
 
 if len(sys.argv) == 1:
 	print(banner)
-	print("Need 2 arguments, the address and port of the honeypot")
+	print(colors.FAIL + "Need 2 arguments, the address and port of the honeypot" + colors.ENDC)
 	sys.exit()
 else:
 	pass
@@ -71,9 +84,7 @@ else:
 print(banner)
 try:
 	honeypot = Honeypot(sys.argv[1],int(sys.argv[2]))
+	honeypot.run()
 except OSError:
-	print("ERROR: That address is already in use, please use a different one")
-
-
-
+	print(colors.FAIL + "ERROR: That address is already in use, please use a different one" + colors.ENDC)
 
